@@ -1,0 +1,17 @@
+FROM ubuntu:14.04
+
+ENV HOME /root
+ENV PATH /usr/local/rvm/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -qq && apt-get -y install curl
+
+# install ruby
+RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB; \
+    curl -sSL https://raw.githubusercontent.com/wayneeseguin/rvm/stable/binscripts/rvm-installer | bash -s stable --ruby;
+
+# install compass
+RUN /bin/bash -l -c "rvm requirements" && \
+    /bin/bash -l -c "gem install --no-rdoc --no-ri compass bootstrap-sass"
+
+WORKDIR /var/www/html

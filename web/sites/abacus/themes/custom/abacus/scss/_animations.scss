@@ -1,0 +1,19 @@
+
+.abacus {
+
+  &--animate-in {
+    animation-duration: 0.5s;
+    animation-name: animatein;
+  }
+
+  @keyframes animatein {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+}

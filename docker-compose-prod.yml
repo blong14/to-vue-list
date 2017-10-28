@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  
+  mariadb:
+    image: wodby/mariadb:10.1-2.3.3
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+    volumes:
+      - ./maria-db-data:/var/lib/mysql
+
+  abacus:
+    build: .
+    environment:
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      DB_HOST: mariadb
+      DB_USER: drupal
+      DB_PASSWORD: drupal
+      DB_NAME: drupal
+      DB_DRIVER: mysql
+      SITE_URL: 8080.abacus.lgs.littlegreensoftware.com
+    volumes:
+      - /var/jenkins/Scripts/jenkinsbuildscripts/buildnumber_com.abacus.txt:/var/www/html/web/sites/abacus/modules/custom/abacus_base/buildnumber_com.abacus.txt
+      - ./web/sites/abacus/themes/custom:/var/www/html/web/sites/abacus/themes/custom
+      - ./web/sites/abacus/modules/custom:/var/www/html/web/sites/abacus/modules/custom
+
+  apache:
+    image: wodby/drupal-apache:2.4-1.0.2
+    depends_on:
+      - abacus
+    environment:
+      APACHE_LOG_LEVEL: debug
+      APACHE_BACKEND_HOST: abacus
+      APACHE_SERVER_ROOT: /var/www/html/web
+    volumes:
+      - ./apache-data:/var/www/html
+    labels:
+      - 'traefik.backend=apache'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:abacus.lgs.littlegreensoftware.com,Port:8080'
+
+  ruby:
+    build:
+      context: .
+      dockerfile: DockerRuby
+    command: ['/bin/bash', '-l', '-c', 'compass compile']
+    volumes:
+      - ./config.rb:/var/www/html/config.rb
+      - ./web/sites/abacus/themes/custom:/var/www/html/web/sites/abacus/themes/custom
+
+  redis:
+    image: wodby/redis:3.2-2.1.2
+
+  adminer:
+    image: wodby/adminer:4.3-1.1.0
+    environment:
+      ADMINER_SALT: adminer-salt
+    labels:
+      - 'traefik.backend=abacus-db'
+      - 'traefik.port=9000'
+      - 'traefik.frontend.rule=Host:abacus-db.lgs.littlegreensoftware.com,Port:8080'
+
+networks:
+  default:
+    external:
+      name: lgsdocker_default

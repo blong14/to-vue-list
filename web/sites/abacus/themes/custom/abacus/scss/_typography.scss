@@ -1,0 +1,13 @@
+h1,h2,h3,h4,h5,
+.h1,.h2,.h3,.h4,.h5 {
+  padding-bottom: 0;
+  margin: 0;
+  border-bottom: 0;
+  color: $c-blue;
+  text-transform: uppercase;
+}
+
+h1 {
+    font-family: $font-family-serif;
+    margin: .5em 1em;
+}

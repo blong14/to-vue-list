@@ -34,3 +34,6 @@ xmlrpc.php
 /profiles
 /scripts
 /themes
+
+maria-db-data
+.DS_Store

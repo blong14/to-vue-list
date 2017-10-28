@@ -1,0 +1,74 @@
+
+.page-milestones {
+
+  .abacus {
+    &--Pending {
+      &:before {
+        content: "\e157";
+      }
+    }
+
+    &--Completed {
+      &:before {
+        content: "\e067";
+      }
+    }
+
+    &--content-container {
+
+      section {
+        padding: 0;
+        border: 0;
+
+        .region-content {
+          background-color: $c-gray;
+
+          .block {
+            padding: 1.5rem;
+            background-color: $c-white;
+            margin-bottom: 1.5rem;
+            border: 1px solid $c-border;
+
+            // TODO(Ben): Hack as there is an extra block from an
+            // empty view. Need to figure out how to remove the view
+            // without losing the path navigation.
+            &:nth-last-child(2),
+            &:last-of-type {
+              margin-bottom: 0;
+            }
+
+            .block-title {
+              padding-bottom: 30px !important;
+            }
+
+            .abacus--block-content {
+              position: relative;
+
+              .abacus--status-text {
+                position: absolute;
+                top: -85px; // TODO: These positioning may not be robust enough
+                right: 40px;
+                color: $c-blue;
+              }
+
+              .abacus--task-text {
+                position: absolute;
+                top: -55px; // TODO: These positioning may not be robust enough
+              }
+            }
+
+          }
+        }
+      }
+    }
+  }
+
+  // TODO(Ben): Hack as there is an extra block from an
+  // empty view. Need to figure out how to remove the view
+  // without losing the path navigation.
+  #block-system-main {
+    display: none;
+  }
+    
+}
+

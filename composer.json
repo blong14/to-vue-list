@@ -1,0 +1,96 @@
+{
+    "name": "Abacus",
+    "description": "Abacus Project",
+    "repositories": {
+        "drupal": {
+            "type": "composer",
+            "url": "https://packages.drupal.org/7"
+        }
+    },
+    "require": {
+        "php": ">=5.2.5",
+        "ext-gd": "*",
+        "ext-xml": "*",
+        "ext-json": "*",
+        "ext-openssl": "*",
+        "ext-curl": "*",
+        "ext-pdo": "*",
+        "ext-pdo_mysql": "*",
+        "composer/installers": "~1.0",
+        "cweagans/composer-patches": "^1.6",
+        "drush/drush": "~7.0",
+        "drupal/drupal": "7.*",
+        "drupal/masquerade": "1.0-rc7",
+        "drupal/bootstrap": "3.14",
+        "drupal/features": "2.10",
+        "drupal/jquery_update": "3.0-alpha5",
+        "drupal/diff": "3.3",
+        "drupal/strongarm": "2.0",
+        "drupal/admin_menu": "3.0-rc5",
+        "drupal/devel": "1.5",
+        "drupal/redis": "3.15",
+        "drupal/views": "3.18",
+        "drupal/menu_import": "^1.7",
+        "drupal/features_extra": "^1.0",
+        "drupal/date": "2.10",
+        "drupal/calendar": "3.5",
+        "drupal/migrate": "2.8",
+        "drupal/entityreference": "1.5",
+        "drupal/feeds": "2.0-beta4",
+        "drupal/feeds_entity_processor": "1.x-dev",
+        "drupal/token": "^1.7",
+        "drupal/uuid": "^1.0",
+        "drupal-composer/preserve-paths": "^0.1.4",
+        "drupal/entityreference_autocomplete": "1.13"
+    },
+    "conflict": {
+        "drupal/core": "8.*"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "rm README.md LICENSE .travis.yml phpunit.xml.dist"
+        ]
+    },
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "installer-paths": {
+            "web/": [
+                "type:drupal-core"
+            ],
+            "web/sites/all/modules/contrib/{$name}/": [
+                "type:drupal-module"
+            ],
+            "web/sites/all/themes/contrib/{$name}/": [
+                "type:drupal-theme"
+            ],
+            "web/sites/all/libraries/{$name}/": [
+                "type:drupal-library"
+            ],
+            "web/sites/all/drush/{$name}/": [
+                "type:drupal-drush"
+            ],
+            "web/profiles/{$name}/": [
+                "type:drupal-profile"
+            ]
+        },
+        "preserve-paths": [
+            "web/sites/all/modules/contrib",
+            "web/sites/all/themes/contrib",
+            "web/sites/all/settings.php",
+            "web/sites/all/libraries",
+            "web/sites/alls/drush",
+            "web/sites/default/settings.php",
+            "web/sites/default/files",
+            "web/sites/sites.php"
+        ],
+        "patches": {
+            "drupal/drupal": {
+                "Redirect to install.php": "https://gist.githubusercontent.com/csandanov/72d6e5d9bfd857491a87fa9131e5728c/raw/bff270bea6f5a05779a4fcd5a570dc3e36bb25ca/drupal-7-install-php-redirect.patch"
+            }
+        }
+    }
+}

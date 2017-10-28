@@ -1,0 +1,23 @@
+
+.btn {
+  border-radius: 1rem;
+}
+
+.btn-default {
+  color: $c-blue;
+  border-color: $c-blue;
+
+  &:hover, &:active, &:focus, &:visited {
+    color: $c-blue;
+    border-color: $c-blue;
+  }
+}
+
+.btn-glass-white {
+  border-color: $c-white;
+  color: $c-white;
+
+  &:hover, &:active, &:focus, &:visited {
+    color: $c-white;
+  }
+}

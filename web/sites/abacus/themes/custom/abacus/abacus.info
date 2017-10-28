@@ -1,0 +1,53 @@
+name = 'Abacus'
+description = Abacus style and theme.
+core = 7.x
+base theme = bootstrap
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Regions
+;;;;;;;;;;;;;;;;;;;;;
+
+regions[navigation]     = 'Navigation'
+regions[header]         = 'Top Bar'
+regions[highlighted]    = 'Highlighted'
+regions[help]           = 'Help'
+regions[content]        = 'Content'
+regions[sidebar_first]  = 'Primary'
+regions[sidebar_second] = 'Secondary'
+regions[footer]         = 'Footer'
+regions[page_top]       = 'Page top'
+regions[page_bottom]    = 'Page bottom'
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Stylesheets
+;;;;;;;;;;;;;;;;;;;;;
+
+stylesheets[all][] = css/style.css
+
+
+;;;;;;;;;;;;;;;;;;;;;
+;; Scripts
+;;;;;;;;;;;;;;;;;;;;;
+
+scripts[] = 'javascripts/bootstrap/affix.js'
+scripts[] = 'javascripts/bootstrap/alert.js'
+scripts[] = 'javascripts/bootstrap/button.js'
+scripts[] = 'javascripts/bootstrap/carousel.js'
+scripts[] = 'javascripts/bootstrap/collapse.js'
+scripts[] = 'javascripts/bootstrap/dropdown.js'
+scripts[] = 'javascripts/bootstrap/modal.js'
+scripts[] = 'javascripts/bootstrap/tooltip.js'
+scripts[] = 'javascripts/bootstrap/popover.js'
+scripts[] = 'javascripts/bootstrap/scrollspy.js'
+scripts[] = 'javascripts/bootstrap/tab.js'
+scripts[] = 'javascripts/bootstrap/transition.js'
+
+scripts[] = 'javascripts/ajax_commands.custom.js'
+scripts[] = 'javascripts/mobile-menu.custom.js'
+scripts[] = 'javascripts/navigation.messages.custom.js'
+scripts[] = 'javascripts/navigation.user_login.custom.js'
+
+; Disable the CDN provider so compiled source files can be used.
+settings[bootstrap_cdn] = ''

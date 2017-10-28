@@ -1,0 +1,95 @@
+version: "3"
+
+services:
+  mariadb:
+    image: wodby/mariadb:10.1-2.3.3
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: drupal
+      MYSQL_USER: drupal
+      MYSQL_PASSWORD: drupal
+    volumes:
+      - ./maria-db-data:/var/lib/mysql
+
+  abacus:
+    build: .
+    environment:
+      PHP_SENDMAIL_PATH: /usr/sbin/sendmail -t -i -S mailhog:1025
+      DB_HOST: mariadb
+      DB_USER: drupal
+      DB_PASSWORD: drupal
+      DB_NAME: drupal
+      DB_DRIVER: mysql
+      SITE_URL: 8000.abacus.localhost
+      # PHP_XDEBUG: 1
+      # PHP_XDEBUG_DEFAULT_ENABLE: 1
+      # PHP_XDEBUG_REMOTE_CONNECT_BACK: 0         # This is needed to respect remote.host setting below
+      # PHP_XDEBUG_REMOTE_HOST: "10.254.254.254"  # You will also need to 'sudo ifconfig lo0 alias 10.254.254.254'
+    volumes:
+      - todata:/var/www/html:cached
+      - ./composer.json:/var/www/html/composer.json:cached
+      - ./composer.lock:/var/www/html/composer.lock:cached
+      - ./drush:/var/www/html/drush:cached
+      - ./site-audit:/var/www/html/site-audit:cached
+      - ./web/sites/sites.php:/var/www/html/web/sites/sites.php:cached
+      - ./web/sites/abacus/settings.php:/var/www/html/web/sites/abacus/settings.php:cached
+      - ./web/sites/abacus/modules/custom:/var/www/html/web/sites/abacus/modules/custom:cached
+      - ./web/sites/abacus/themes/custom:/var/www/html/web/sites/abacus/themes/custom:cached
+
+  apache:
+    image: wodby/drupal-apache:2.4-1.0.2
+    depends_on:
+      - abacus
+    environment:
+      APACHE_LOG_LEVEL: debug
+      APACHE_BACKEND_HOST: abacus
+      APACHE_SERVER_ROOT: /var/www/html/web
+    ports:
+      - '9000:80'
+    volumes:
+      - todata:/var/www/html:cached
+      - ./web/sites/abacus/themes/custom:/var/www/html/web/sites/abacus/themes/custom:cached
+      - ./web/sites/abacus/modules/custom:/var/www/html/web/sites/abacus/modules/custom:cached
+    labels:
+      - 'traefik.backend=apache'
+      - 'traefik.port=80'
+      - 'traefik.frontend.rule=Host:abacus.localhost'
+
+  ruby:
+    build:
+      context: .
+      dockerfile: DockerRuby
+    depends_on:
+      - abacus
+    command: ['/bin/bash', '-l', '-c', 'compass watch']
+    volumes:
+      - ./config.rb:/var/www/html/config.rb:cached
+      - ./web/sites/abacus/themes/custom:/var/www/html/web/sites/abacus/themes/custom:cached
+
+  adminer:
+    image: wodby/adminer:4.3-1.1.0
+    environment:
+      ADMINER_SALT: adminer-salt
+    labels:
+      - 'traefik.backend=adminer'
+      - 'traefik.port=9000'
+      - 'traefik.frontend.rule=Host:adminer.localhost'
+
+  mailhog:
+    image: mailhog/mailhog
+    labels:
+      - 'traefik.backend=mailhog'
+      - 'traefik.port=8025'
+      - 'traefik.frontend.rule=Host:mailhog.localhost'
+
+  traefik:
+    image: traefik
+    command: -c /dev/null --web --docker --logLevel=INFO
+    ports:
+      - '8000:80'
+#      - '8080:8080' # Dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  todata:

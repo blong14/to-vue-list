@@ -1,0 +1,72 @@
+
+#edit-field-faculty {
+  width: 100%;
+  line-height: 2;
+}
+
+input[type="text"],
+textarea {
+
+  &.form-control:disabled {
+    cursor: default;
+    background-color: $c-light-disabled;
+  }
+
+}
+
+input[type='radio'] {
+  &.abacus--radio:disabled + span {
+    color: $c-disabled;
+  }
+}
+
+input[type="checkbox"] {
+
+  &.abacus--checkbox {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer; 
+  }
+
+  &.abacus--checkbox:not(:checked) {
+    &:before {
+      content: "\2713";
+      color: $c-white;
+      border: 1px solid $c-blue;
+      background: $c-white;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+  }
+
+  &.abacus--checkbox:checked {
+    &:before {
+      content: "\2713";
+      color: $c-white;
+      border: 1px solid $c-blue;
+      background: $c-blue;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+  }
+
+  &.abacus--checkbox:disabled:not(:checked) {
+    &:before {
+      border: 1px solid $c-disabled;
+      color: $c-disabled;
+      background-color: $c-disabled;
+    }
+
+    &.abacus--active-calendar {
+      &:before {
+        border: 1px solid $c-blue;
+        color: $c-white;
+        background-color: $c-white;
+      }
+    }
+  }
+
+  &.abacus--checkbox:disabled:not(:checked) + span {
+    color: $c-disabled;
+  }
+}

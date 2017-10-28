@@ -1,0 +1,19 @@
+// Hack cause drupal sucks
+.comment-node-settings-form,
+.path-form {
+  display: none;
+}
+
+.form-item-dissertation-adviser {
+  margin-bottom: 0px;
+}
+
+#user-profile-form {
+  .user-picture {
+    img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+    }
+  }
+}
